@@ -1,8 +1,12 @@
+// config.js
+require('dotenv').config();
+
 module.exports = {
-  TOKEN: 'MTQ1MjczMDcwNzM0Nzc3MTUyMw.Geo0Yf.BqFZmcbiND-LLyRqcNQy__NRnV4GDs-s9Tiwj8',
-  CLIENT_ID: '1452730707347771523',
+  TOKEN: process.env.DISCORD_TOKEN,
+  CLIENT_ID: process.env.CLIENT_ID,
+  GUILD_ID: process.env.GUILD_ID || '', // Optional
   DATA_DIR: './data',
-  DAILY_COOLDOWN: 24 * 60 * 60 * 1000, // 24 hours
+  DAILY_COOLDOWN: 24 * 60 * 60 * 1000,
   STARTING_RESOURCES: {
     scrap: 50,
     coins: 10,
