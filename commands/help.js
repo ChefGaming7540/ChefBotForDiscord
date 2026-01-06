@@ -13,6 +13,7 @@ module.exports = {
         { name: '💰 Economy', value: '`/balance` - View your balance\n`/convert` - Convert scrap to coins (3:1)\n`/daily` - Claim daily rewards' },
         { name: '📦 Crates', value: '`/buy` - Buy crates with coins\n`/open` - Open a crate with a key' },
         { name: '🎒 Inventory', value: '`/inventory` - View your items' },
+        { name: '🎰 Minigames', value: '`/slots` - Spin the slot machine\n`/roulette` - Spin the roulette wheel' },
         { name: '💡 Tips', value: 'Start with 50 scrap, 10 coins, 1 crate, and 1 key!\nConversion: 3 Scrap = 1 Coin' }
       );
     

@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getUser, saveUser } = require('../utils/userManager');
 const { itemsData } = require('../utils/database');
 const { QUALITIES, rollQuality } = require('../utils/qualities');
-const { getItemFromLootPool, rollUnusualEffect } = require('../utils/lootPool');
+const { getItemFromLootPool, rollUnusualEffect, rollWarPaint } = require('../utils/lootPool');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -42,9 +42,55 @@ module.exports = {
     await interaction.reply({ embeds: [openingEmbed] });
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    const quality = rollQuality();
-    const qualityData = QUALITIES[quality];
     const item = getItemFromLootPool(itemsData.crates[crateType].lootPool);
+    
+    // Check if it's a war paint
+    if (item.type === 'warpaint') {
+      const warPaintName = rollWarPaint();
+      const quality = rollQuality(true); // War paints only get Normal or Unusual
+      const qualityData = QUALITIES[quality];
+      
+      let unusualEffect = null;
+      if (quality === 'unusual') {
+        unusualEffect = rollUnusualEffect();
+      }
+      
+      const newItem = {
+        id: Date.now() + Math.random().toString(36),
+        name: warPaintName,
+        type: 'warpaint',
+        quality: quality,
+        unusualEffect: unusualEffect,
+        obtainedAt: new Date().toISOString()
+      };
+      
+      user.inventory.push(newItem);
+      saveUser(interaction.user.id);
+      
+      const resultEmbed = new EmbedBuilder()
+        .setTitle(`${itemsData.crates[crateType].emoji} Crate Opened!`)
+        .setColor(qualityData.color)
+        .addFields(
+          { name: 'Item', value: warPaintName, inline: true },
+          { name: 'Type', value: 'War Paint', inline: true },
+          { name: 'Quality', value: qualityData.name, inline: true }
+        );
+      
+      if (unusualEffect) {
+        resultEmbed.addFields({ name: '✨ Unusual Effect', value: unusualEffect });
+        resultEmbed.setDescription(`🎉 **UNUSUAL WAR PAINT!** This paint will apply ${unusualEffect} to any item!`);
+      } else {
+        resultEmbed.setDescription(`🎨 **War Paint!** Use \`/apply\` to decorate an item with this paint!`);
+      }
+      
+      resultEmbed.setFooter({ text: `Remaining: ${user.keys} keys | ${user.crates[crateType] || 0} ${itemsData.crates[crateType].name}s` });
+      
+      return await interaction.editReply({ embeds: [resultEmbed] });
+    }
+    
+    // Regular item (weapon/cosmetic)
+    const quality = rollQuality(false);
+    const qualityData = QUALITIES[quality];
     
     let unusualEffect = null;
     if (quality === 'unusual') {

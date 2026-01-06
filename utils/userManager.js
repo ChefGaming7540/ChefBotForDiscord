@@ -7,7 +7,9 @@ function getUser(userId) {
       ...config.STARTING_RESOURCES,
       inventory: [],
       lastDaily: null,
-      lastMinigame: null
+      lastMinigame: null,
+      lastTrade: null,
+      tradeHistory: []
     };
     saveUsers();
   }

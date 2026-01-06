@@ -19,7 +19,21 @@ function rollUnusualEffect() {
   return itemsData.unusualEffects[Math.floor(Math.random() * itemsData.unusualEffects.length)];
 }
 
+function rollWarPaint() {
+  const warPaints = itemsData.warPaints;
+  const totalWeight = warPaints.reduce((sum, wp) => sum + wp.weight, 0);
+  let roll = Math.random() * totalWeight;
+  
+  for (const paint of warPaints) {
+    roll -= paint.weight;
+    if (roll <= 0) return paint.name;
+  }
+  
+  return warPaints[0].name;
+}
+
 module.exports = {
   getItemFromLootPool,
-  rollUnusualEffect
+  rollUnusualEffect,
+  rollWarPaint
 };

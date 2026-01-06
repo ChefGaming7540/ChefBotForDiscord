@@ -96,6 +96,18 @@ const itemsData = loadData(ITEMS_FILE, {
     "Steaming", "Flaming Lantern", "Cloudy Moon", "Ethereal Flame",
     "Green Confetti", "Purple Confetti", "Haunted Ghosts", "Green Energy",
     "Purple Energy", "Terrorwatt", "Phosphorous", "Sulphurous"
+  ],
+  warPaints: [
+    { name: "Plaid Potshotter Mk. II", weight: 10 },
+    { name: "Tiger Buffed", weight: 12 },
+    { name: "Hot Rod", weight: 12 },
+    { name: "Bamboo Brushed", weight: 15 },
+    { name: "Sudden Flurry", weight: 15 },
+    { name: "Night Owl", weight: 13 },
+    { name: "Macabre Web", weight: 10 },
+    { name: "Fire Glazed", weight: 8 },
+    { name: "Miami Element", weight: 8 },
+    { name: "Dragon Slayer", weight: 7 }
   ]
 });
 
