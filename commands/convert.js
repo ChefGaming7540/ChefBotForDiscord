@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getUser, saveUser } = require('../utils/userManager');
-const { SCRAP_VALUES } = require('../utils/qualities');
+const { SCRAP_VALUES, KEY_REWARDS } = require('../utils/qualities');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -57,13 +57,24 @@ module.exports = {
       
       const item = user.inventory[itemIndex];
       const scrapValue = SCRAP_VALUES[item.quality] || 1;
+      const keyReward = KEY_REWARDS[item.quality] || 0;
       
       // Remove item from inventory
       user.inventory.splice(itemIndex, 1);
       user.scrap += scrapValue;
+      
+      let rewardText = `♻️ Scrapped **${item.name}** (${item.quality})!\n\n**Rewards:**\n🔩 ${scrapValue} scrap metal`;
+      
+      if (keyReward > 0) {
+        user.keys += keyReward;
+        rewardText += `\n🔑 ${keyReward} key${keyReward > 1 ? 's' : ''}`;
+      }
+      
       saveUser(interaction.user.id);
       
-      await interaction.reply(`♻️ Scrapped **${item.name}** (${item.quality}) for **${scrapValue} scrap metal**!\n**New Balance:** ${user.scrap} scrap`);
+      rewardText += `\n\n**New Balance:** ${user.scrap} scrap | ${user.keys} keys`;
+      
+      await interaction.reply(rewardText);
     }
   }
 };
